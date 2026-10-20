@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<92bd6ecbb8cb873180abb6a1be2e75fd>>
+ * @generated SignedSource<<f0a8f32b10608e38e6790de239dce46b>>
  * @lightSyntaxTransform
  */
 
@@ -17,15 +17,12 @@ export type OpenAIReasoningEffort = "HIGH" | "LOW" | "MEDIUM" | "MINIMAL" | "NON
 export type OptimizationDirection = "MAXIMIZE" | "MINIMIZE" | "NONE";
 export type PromptMessageRole = "AI" | "SYSTEM" | "TOOL" | "USER";
 export type PromptTemplateFormat = "F_STRING" | "MUSTACHE" | "NONE";
-export type EvaluatorPreviewsInput = {
-  credentials?: ReadonlyArray<GenerativeCredentialInput> | null;
-  previews: ReadonlyArray<EvaluatorPreviewItemInput>;
-};
-export type EvaluatorPreviewItemInput = {
+export type EvaluatorPreviewInput = {
   applyOnlineEvaluationLimits?: boolean;
-  context: any;
+  credentials?: ReadonlyArray<GenerativeCredentialInput> | null;
   evaluator: EvaluatorDefinitionInput;
   inputMapping: EvaluatorInputMappingInput;
+  subjects: ReadonlyArray<EvaluatorPreviewSubjectInput>;
 };
 export type EvaluatorDefinitionInput = {
   builtInEvaluatorId: string;
@@ -290,15 +287,21 @@ export type EvaluatorInputMappingInput = {
   literalMapping: any;
   pathMapping: any;
 };
+export type EvaluatorPreviewSubjectInput = {
+  context: any;
+  id: string;
+};
 export type GenerativeCredentialInput = {
   envVarName: string;
   value: string;
 };
-export type EvaluatorOutputPreviewMutation$variables = {
-  input: EvaluatorPreviewsInput;
+export type useEvaluatorPreviewSubscription$variables = {
+  input: EvaluatorPreviewInput;
 };
-export type EvaluatorOutputPreviewMutation$data = {
-  readonly evaluatorPreviews: {
+export type useEvaluatorPreviewSubscription$data = {
+  readonly evaluatorPreview: {
+    readonly error: string | null;
+    readonly id: string;
     readonly results: ReadonlyArray<{
       readonly annotation: {
         readonly explanation: string | null;
@@ -312,9 +315,9 @@ export type EvaluatorOutputPreviewMutation$data = {
     }>;
   };
 };
-export type EvaluatorOutputPreviewMutation = {
-  response: EvaluatorOutputPreviewMutation$data;
-  variables: EvaluatorOutputPreviewMutation$variables;
+export type useEvaluatorPreviewSubscription = {
+  response: useEvaluatorPreviewSubscription$data;
+  variables: useEvaluatorPreviewSubscription$variables;
 };
 
 const node: ConcreteRequest = (function(){
@@ -325,7 +328,21 @@ var v0 = [
     "name": "input"
   }
 ],
-v1 = [
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "error",
+  "storageKey": null
+},
+v3 = [
   {
     "alias": null,
     "args": [
@@ -335,11 +352,13 @@ v1 = [
         "variableName": "input"
       }
     ],
-    "concreteType": "EvaluatorPreviewsPayload",
+    "concreteType": "EvaluatorPreviewSubjectResult",
     "kind": "LinkedField",
-    "name": "evaluatorPreviews",
+    "name": "evaluatorPreview",
     "plural": false,
     "selections": [
+      (v1/*:: as any*/),
+      (v2/*:: as any*/),
       {
         "alias": null,
         "args": null,
@@ -363,11 +382,12 @@ v1 = [
             "name": "annotation",
             "plural": false,
             "selections": [
+              (v1/*:: as any*/),
               {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
-                "name": "explanation",
+                "name": "name",
                 "storageKey": null
               },
               {
@@ -388,26 +408,13 @@ v1 = [
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
-                "name": "name",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "id",
+                "name": "explanation",
                 "storageKey": null
               }
             ],
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "error",
-            "storageKey": null
-          }
+          (v2/*:: as any*/)
         ],
         "storageKey": null
       }
@@ -420,29 +427,29 @@ return {
     "argumentDefinitions": (v0/*:: as any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "EvaluatorOutputPreviewMutation",
-    "selections": (v1/*:: as any*/),
-    "type": "Mutation",
+    "name": "useEvaluatorPreviewSubscription",
+    "selections": (v3/*:: as any*/),
+    "type": "Subscription",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
     "argumentDefinitions": (v0/*:: as any*/),
     "kind": "Operation",
-    "name": "EvaluatorOutputPreviewMutation",
-    "selections": (v1/*:: as any*/)
+    "name": "useEvaluatorPreviewSubscription",
+    "selections": (v3/*:: as any*/)
   },
   "params": {
-    "cacheID": "21c50ac32de88b602547d5fb2308de53",
+    "cacheID": "b9860b0755f6cba2b5e97b42299c442b",
     "id": null,
     "metadata": {},
-    "name": "EvaluatorOutputPreviewMutation",
-    "operationKind": "mutation",
-    "text": "mutation EvaluatorOutputPreviewMutation(\n  $input: EvaluatorPreviewsInput!\n) {\n  evaluatorPreviews(input: $input) {\n    results {\n      evaluatorName\n      annotation {\n        explanation\n        label\n        score\n        name\n        id\n      }\n      error\n    }\n  }\n}\n"
+    "name": "useEvaluatorPreviewSubscription",
+    "operationKind": "subscription",
+    "text": "subscription useEvaluatorPreviewSubscription(\n  $input: EvaluatorPreviewInput!\n) {\n  evaluatorPreview(input: $input) {\n    id\n    error\n    results {\n      evaluatorName\n      annotation {\n        id\n        name\n        label\n        score\n        explanation\n      }\n      error\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "cde83044fc6975f7c5f9879bbce9bf41";
+(node as any).hash = "9650f8824304e173a26d0c55a772f644";
 
 export default node;
